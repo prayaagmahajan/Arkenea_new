@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@if (ViewBag.UserProfile != null)
+{
+    var userProfile = ViewBag.UserProfile;
+        <h2>User Profile Details</h2>
+
+        <div>
+                <img src="@userProfile.ProfilePhoto" alt="Profile Picture"  width="100" height="100">
+            <p><strong>First Name:</strong> @userProfile.FirstName</p>
+            <p><strong>Last Name:</strong> @userProfile.LastName</p>
+            <p><strong>Email:</strong> @UserManager.GetUserAsync(User).Result.Email</p>
+            <p><strong>Username:</strong> @userProfile.Username</p>
+            <p><strong>Address:</strong> @userProfile.Address.City, @userProfile.Address.State, @userProfile.Address.Pincode</p>
+            <p><strong>Phone Number:</strong> @userProfile.PhoneNumber</p>
+            <p><strong>Resume:</strong> @userProfile.Resume</p>
+            <a asp-action="DownloadResume" class="btn btn-success">Download Resume</a>
+        </div>
+
+        @if (User.IsInRole("admin"))
+        {
+            <a asp-action="EditProfileDetails" class="btn btn-primary">Edit Profile</a>
+        }
+}
+else
+{
+        <p>@ViewBag.Message</p>
+}
